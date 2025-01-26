@@ -7,8 +7,8 @@ distinguished_name = req_distinguished_name
 req_extensions = v3_req
 prompt = no
 [req_distinguished_name]
-C = India
-ST = Karnataka
+C = IN
+ST = KA
 L = Bangalore
 O = Jambu
 OU = k8s
