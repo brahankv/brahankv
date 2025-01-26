@@ -47,3 +47,11 @@ sudo vi /lib/tmpfiles.d/wslg.conf
 d /tmp/.X11-unix - - - - -
 ```
 Run wsl --shutdown in PowerShell to force restart WSL.
+
+### Gnome terminal on wsl
+Create /etc/dbus-1/session.conf and add the below content,
+```xml
+
+<!--<listen>unix:tmpdir=/tmp</listen>-->
+<listen>tcp:host=localhost,port=0</listen>
+```
