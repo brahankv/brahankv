@@ -1,0 +1,15 @@
+FontHeight=12
+Columns=120
+Rows=36
+X=140
+Y=50
+Font=Consolas
+CursorType=block
+FontSmoothing=full
+RewrapOnResize=no
+Scrollbar=right
+ScrollbackLines=1000
+Transparency=low
+StatusLine=yes
+RightClickAction=paste
+MiddleClickAction=enter
