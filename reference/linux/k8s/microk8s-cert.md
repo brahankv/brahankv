@@ -29,3 +29,8 @@ Create self signed certificate
 ```
 openssl x509 -req -sha256 -days 365 -in secure.csr -signkey secure.key -out brahan.jambu.org-domain.crt
 ```
+
+Get dashboard token
+```
+sudo microk8s.kubectl get secret -oyaml microk8s-dashboard-token -nkube-system | grep "token:" | awk '{print $2 }' | base64 -d
+```
