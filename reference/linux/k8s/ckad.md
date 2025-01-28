@@ -3,6 +3,7 @@
 https://www.youtube.com/watch?v=4oc_zKhDThI&list=PLpbwBK0ptssyIgAoHR-611wt3O9wobS8T
 
 https://app.pluralsight.com/library/courses/ckad-application-design-build-cert/table-of-contents
+https://github.com/nigelpoulton/ckad
 
 
 ```bash
