@@ -59,3 +59,114 @@ kubectl -n earth create deployment project-earthflower --image=httpd:2.4.41-alpi
 kubectl -n moon create secret generic secret1 --from-literal user=test --from-literal pass=pwd 
 kubectl -n moon secret secret1 -o=jsonpath="{.data.user}" | base64 -d
 ```
+```bash
+kubectl -n moon create cm configmap-web-moon-html --from-file=index.html=/opt/course/15/web-moon.html
+kubectl -n moon rollout restart deployment web-moon
+kubectl -n moon run tmp --restart=Never -rm -i --image=nginx:alpine -- curl web-moon-1
+```
+
+#### side-car containers
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cleaner
+  namespace: mercury
+  labels:
+    app: cleaner
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: cleaner
+  template:
+    metadata:
+      labels:
+        app: cleaner
+    spec:
+      containers:
+        - name: cleaner-con
+          image: bash:5.0.11
+          command: ['bash', '-c', 'while true; do echo `date` : "logging" >> /var/log/cleaner/cleaner.log; sleep 1; done']
+          volumeMounts:
+            - name: data
+              mountPath: /var/log/cleaner
+      initContainers:
+        - name: init
+          image: bash:5.0.11
+          command: ['bash', '-c', 'echo `date` : "init" > /var/log/cleaner/cleaner.log']
+          volumeMounts:
+            - name: data
+              mountPath: /var/log/cleaner
+        - name: logshipper
+          image: bash:5.0.11
+          restartPolicy: Always
+          command: ['sh', '-c', 'tail -F /var/log/cleaner/cleaner.log']
+          volumeMounts:
+            - name: data
+              mountPath: /var/log/cleaner
+      volumes:
+        - name: data
+          emptyDir: {}
+```
+#### network policy
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: np1
+  namespace: venus
+spec:
+  podSelector:
+    matchLabels:
+      id: frontend
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          id: api
+  - ports:
+    - protocol: TCP
+      port: 53
+    - protocol: UDP
+      port: 53
+```
+```bash
+kubectl -n neptune create deployment neptune-10ab --image:httpd:2.4-alpine --replicas=3 --dry-run=client -o yaml
+```
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: neptune-10ab
+  name: neptune-10ab
+  namespace: neptune
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: neptune-10ab
+  template:
+    metadata:
+      labels:
+        app: neptune-10ab
+    spec:
+      serviceAccountName: neptune-sa-v2
+      containers:
+      - image: httpd:2.4-alpine
+        name: neptune-10ab
+        resources:
+          limits:
+            memory: 50Mi
+          requests:
+            memory: 20Mi
+```
+```bash			
+kubectl -n sun get po --show-labels
+kubectl -n sun label pod -l type=worker protected=true
+kubectl -n sun label pod -l type=runner protected=true
+kubectl -n sun annotate pod -l protected=true protected="Do not delete this pod"
+```
