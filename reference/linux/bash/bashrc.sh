@@ -326,3 +326,31 @@ function stopdp()
 
     scaledp 0 ${dp} ${ns}
 }
+
+function podcp() {
+    local pod=$1
+    local ns=$2
+
+    if [ -z "${ns}" ]; then
+        ns=brahan
+    fi
+
+    if [ ! -z "${pod}" ]; then
+        while read -r bin;
+        do
+            local src=$(find /delivery -name "${bin}" 2>/dev/null | tail -1)
+            if [ -f "${src}" ]; then
+                echo "kubectl cp ${src} ${ns}/${pod}:/opt/app/bin/${bin}"
+                kubectl cp "${src}" ${ns}/${pod}:/opt/app/bin/${bin}
+            fi
+        done < <(cat ~/work/debug/cpbin)
+        while read -r lib;
+        do
+            local src=$(find /delivery -name "${lib}" 2>/dev/null | tail -1)
+            if [ -f "${src}" ]; then
+                echo "kubectl cp ${src} ${ns}/${pod}:/opt/app/lib/${lib}"
+                kubectl cp "${src}" ${ns}/${pod}:/opt/app/lib/${lib}
+            fi
+        done < <(cat ~/work/debug/cplib)
+    fi
+}
