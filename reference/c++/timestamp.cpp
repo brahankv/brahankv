@@ -7,15 +7,15 @@
 
 #include <sys/resource.h> // Linux specific
 
-const char* timestamp() {
+std::string timestamp() {
     std::time_t now = std::time(nullptr);
     std::stringstream ss;
     ss << std::put_time(std::localtime(&now), "%y-%m-%d %OH:%OM:%OS");
-    return ss.str().c_str();
+    return ss.str();
 }
 
 #define __FILENAME__ (__builtin_strrchr(__FILE__, '/') ? __builtin_strrchr(__FILE__, '/') + 1 : __FILE__)    // only show filename and not it's path (less clutter)
-#define INFO std::cout << timestamp() << " [INFO] " << __FILENAME__ << "(" << __FUNCTION__ << ":" << __LINE__ << ") >> "
+#define INFO std::cout << timestamp().c_str() << " [INFO] " << __FILENAME__ << "(" << __FUNCTION__ << ":" << __LINE__ << ") >> "
 
 long get_mem_usage()
 {
