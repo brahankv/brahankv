@@ -101,6 +101,7 @@ bind '"\e`"':"\"cd ~\C-m\""
 bind '"\e-"':"\"cd -\C-m\""
 
 bind '"\ek"':"\"kubectl \""
+bind '"\eb"':"\"kubectl -n brahan \""
 bind '"\em"':"\"microk8s \""
 bind '"\ez"':"\"microk8s stop\""
 bind '"\ex"':"\"microk8s start\""
