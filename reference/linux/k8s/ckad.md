@@ -6,6 +6,13 @@ https://app.pluralsight.com/library/courses/ckad-application-design-build-cert/t
 
 https://github.com/nigelpoulton/ckad
 
+https://trainingportal.linuxfoundation.org/learn/course/kubernetes-for-developers-lfd259
+
+https://github.com/cncf/curriculum
+
+https://www.gcppodcast.com/post/episode-46-borg-and-k8s-with-john-wilkes/
+
+https://github.com/containers
 
 ```bash
 helm -n mercury ls
