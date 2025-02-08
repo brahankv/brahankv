@@ -14,6 +14,8 @@ https://www.gcppodcast.com/post/episode-46-borg-and-k8s-with-john-wilkes/
 
 https://github.com/containers
 
+https://trainingportal.linuxfoundation.org/learn/course/introduction-to-kubernetes/
+
 ```bash
 helm -n mercury ls
 helm -n mercury uninstall internal-issue-report-apiv1
