@@ -386,3 +386,25 @@ function patchChart() {
         log "Provide patch chart version."
     fi
 }
+
+function crictlimgsize() {
+    local t=0;
+    while read -r size;
+    do
+        case "${size: -2}" in
+        kB|KB)
+            t=$(echo "($t + ${size:0:-2})/1" | bc)
+            ;;
+        MB)
+            t=$(echo "($t + (${size:0:-2} * 1024))/1" | bc)
+            ;;
+        GB)
+            t=$(echo "($t + (${size:0:-2} * 1024 * 1024))/1" | bc)
+            ;;
+        *)
+            ;;
+        esac
+    done < <(crictl images | awk '{ print $4 }')
+    local sz=$(echo "$t/1024/1024" | bc -l)
+    echo "Total image size : ${sz} GB"
+}
