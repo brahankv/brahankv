@@ -13,3 +13,8 @@ awk -v min=30575 -v max=30600 'BEGIN{srand(); print int(min+rand()*(max-min+1))}
 lsof -p 20648 | awk 'system("test -f " $9)==0 { print $9 }' | sort | uniq | grep "\.so"
 lsof -p 27680 | grep "/int" | awk '{ print $9 }' | xargs -I{} basename {}
 ```
+
+#### yq
+[https://mikefarah.gitbook.io/yq]
+[https://github.com/mikefarah/yq]
+
