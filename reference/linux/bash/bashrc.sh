@@ -132,11 +132,11 @@ function join { local IFS="$1"; shift; echo "$*"; }
 function joinby { local d=$1; shift; echo -n "$1"; shift; printf "%s" "${@/#/$d}"; }
 
 function log() {
-    printf "[INFO][%s] %s\n" $(date +%d-%m-%Y\ %T) "$@"
+    printf "[INFO][%s] %s\n" "$(date +%d-%m-%Y\ %T)" "$@"
 }
 
 function err() {
-    printf "[ERROR][%s] %s\n" $(date +%d-%m-%Y\ %T) "$@"
+    printf "[ERROR][%s] %s\n" "$(date +%d-%m-%Y\ %T)" "$@"
 }
 
 function execcmd()
@@ -353,5 +353,36 @@ function podcp() {
                 kubectl cp "${src}" ${ns}/${pod}:/opt/app/lib/${lib}
             fi
         done < <(cat ~/work/debug/cplib)
+    fi
+}
+
+# yq (https://github.com/mikefarah/yq/)
+function patchChart() {
+    local subchart=$1
+    local ver=$2
+
+    if [ ! -f "requirements.yaml" ] || [ ! -d "charts" ]; then
+        err "Invalid location: requirements.yaml / charts folder not found."
+        return
+    fi
+
+    if [ ! -z "${ver}" ]; then
+        local existingver=$(yq ".dependencies[] | select(.name==\"${subchart}\") | .version" requirements.yaml)
+        local repo=$(yq ".dependencies[] | select(.name==\"${subchart}\") | .repository" requirements.yaml | tr -d '@')
+
+        log "Patching ${subchart} chart : ${ver}"
+        log "Existing version : ${existingver}"
+
+        yq -i "(.dependencies[] | select(.name==\"${subchart}\")).version |= \"${ver}\"" requirements.yaml
+        yq ".dependencies[] | select(.name==\"${subchart}\")" requirements.yaml
+
+        pushd charts
+        log "Removing existing chart : ${subchart}"
+        rm -r "${subchart}"
+        log "helm fetch ${repo}/${subchart} --version ${ver} --devel --untar"
+        helm fetch ${repo}/${subchart} --version ${ver} --devel --untar
+        popd
+    else
+        log "Provide patch chart version."
     fi
 }
