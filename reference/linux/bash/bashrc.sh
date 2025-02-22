@@ -320,6 +320,15 @@ function scaledp()
     kubectl scale deploy -n ${ns} --replicas=${r} ${dp}
 }
 
+function getrand()
+{
+        local s=$1
+        local e=$2
+
+        awk -v min=$s -v max=$e 'BEGIN{srand(); print int(min+rand()*(max-min+1))}'
+        #shuf -i 30575-30600 -n 1
+}
+
 function stopdp()
 {
     local dp=${1}
