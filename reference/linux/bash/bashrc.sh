@@ -417,3 +417,13 @@ function crictlimgsize() {
     local sz=$(echo "$t/1024/1024" | bc -l)
     echo "Total image size : ${sz} GB"
 }
+
+function addtocm ()
+{
+    local f=$1;
+    local cm=$2;
+    local ns=${3:-'brahan'}
+    if [ -f "$f" ]; then
+        kubectl -n $ns get cm $cm -o yaml | yq ".data |= .\"$f\"=$(cat $f | jq -Rsa .)" | kubectl apply -f -;
+    fi
+}
