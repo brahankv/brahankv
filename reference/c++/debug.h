@@ -17,5 +17,7 @@ void printStackTrace();
 
 void printLoadedSharedLibraries();
 
+void __attribute__((constructor)) calledFirst(); 
+void __attribute__((destructor)) calledLast();
 
 #endif // ___DEBUG_H___
