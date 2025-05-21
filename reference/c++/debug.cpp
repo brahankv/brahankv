@@ -8,6 +8,8 @@
 #include <sstream>
 #include <link.h>
 
+extern const char *__progname;
+
 std::string timestamp() {
     std::time_t now = std::time(nullptr);
     std::stringstream ss;
@@ -44,4 +46,18 @@ void printLoadedSharedLibraries()
     std::cout << "------------------------ LOADED LIBRARIES --------------------" << std::endl;
     dl_iterate_phdr(printSharedLibrary, NULL);
     std::cout << "------------------------ END ---------------------------------" << std::endl;
+}
+
+void calledFirst() {
+    std::string executable = "java";
+    INFO << "Executable:" << __progname << std::endl;
+    if(executable.compare(__progname) == 0) {
+        INFO << "Java process, Call isExit" << std::endl;
+        INFO << "Test" << std::endl;
+    }
+}
+
+void calledLast() {
+    INFO << "Unload" << std::endl;
+    printLoadedSharedLibraries();
 }
